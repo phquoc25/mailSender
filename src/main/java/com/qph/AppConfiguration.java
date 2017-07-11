@@ -64,9 +64,13 @@ public class AppConfiguration {
 
     public static void main(String[] args) {
         ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfiguration.class);
-        QphMailSender qphMailSender = applicationContext.getBean(QphMailSender.class);
+        QphMailSender qphMailSender = applicationContext.getBean(QphMailSenderImpl.class);
         try {
-            qphMailSender.sendMail();
+            if (args.length == 0) {
+                qphMailSender.sendMail();
+            } else {
+                qphMailSender.sendMail(args[0]);
+            }
             System.out.println("Email sending successfully!");
         } catch (MessagingException e) {
             System.out.println("Error when preparing message");
