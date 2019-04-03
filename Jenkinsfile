@@ -6,9 +6,15 @@ pipeline {
             args '-v /Users/quocphan/.m2:/root/.m2'
         }
     }
+
+    parameters {
+            string(name: 'BRANCH_NAME', defaultValue: 'master', description: 'How should I greet the world?')
+    }
+
     stages {
         stage('Build') {
             steps {
+                echo "Building ${params.BRANCH_NAME}"
                 sh 'mvn -B -DskipTests clean package'
             }
         }
