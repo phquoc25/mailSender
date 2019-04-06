@@ -14,10 +14,14 @@ pipeline {
     stages {
         stage('Checkout') {
                 steps {
+                    echo "Checking out code"
                     checkout([$class: 'GitSCM',
-                            branches: [[name: params.BRANCH_NAME]],
-                            extensions: [[$class: 'CleanBeforeCheckout']],
-                        ])
+                                branches: [[name: '*/${params.BRANCH_NAME}']],
+                                doGenerateSubmoduleConfigurations: false,
+                                extensions: [],
+                                submoduleCfg: [],
+                                userRemoteConfigs: [[url: '/Users/quocphan/SrcCodes/mailSender']]
+                                ])
                 }
             }
 
