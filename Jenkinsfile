@@ -12,6 +12,15 @@ pipeline {
     }
 
     stages {
+        stage('Checkout') {
+                steps {
+                    checkout([$class: 'GitSCM',
+                            branches: [[name: params.BRANCH_NAME]],
+                            extensions: [[$class: 'CleanBeforeCheckout']],
+                        ])
+                }
+            }
+
         stage('Build') {
             steps {
                 echo "Building ${params.BRANCH_NAME}"
