@@ -8,20 +8,29 @@ pipeline {
     }
 
     parameters {
-            string(name: 'BRANCH_NAME', defaultValue: 'master', description: 'How should I greet the world?')
+            string(name: 'BRANCH_NAME', defaultValue: 'master', description: 'Which branch name would you like to build?')
     }
 
     stages {
         stage('Checkout') {
                 steps {
-                    echo "Checking out code"
-                    checkout([$class: 'GitSCM',
-                                branches: [[name: '*/${params.BRANCH_NAME}']],
-                                doGenerateSubmoduleConfigurations: false,
-                                extensions: [],
-                                submoduleCfg: [],
-                                userRemoteConfigs: [[url: '/Users/quocphan/SrcCodes/mailSender']]
-                                ])
+                    echo "=========Checking out code============="
+                    // GIT submodule recursive checkout
+                    checkout scm: [
+                            $class: 'GitSCM',
+                            branches: scm.branches,
+                            doGenerateSubmoduleConfigurations: false,
+                            extensions: [[$class: 'SubmoduleOption',
+                                          disableSubmodules: false,
+                                          parentCredentials: false,
+                                          recursiveSubmodules: true,
+                                          reference: '',
+                                          trackingSubmodules: false]],
+                            submoduleCfg: [],
+                            userRemoteConfigs: scm.userRemoteConfigs
+                    ]
+
+                    git branch: "${params.BRANCH_NAME}"
                 }
             }
 
