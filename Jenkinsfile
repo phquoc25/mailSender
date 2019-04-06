@@ -30,7 +30,7 @@ pipeline {
                             userRemoteConfigs: scm.userRemoteConfigs
                     ]
 
-                    git branch: "${params.BRANCH_NAME}"
+                    git branch: "${params.BRANCH_NAME}", url: "https://github.com/phquoc25/mailSender.git"
                 }
             }
 
